@@ -12,7 +12,15 @@ class Kernel extends HttpKernel
      * These middleware are run during every request to your application.
      *
      * @var array<int, class-string|string>
+     * 
+     * 
      */
+
+    protected $middlewarePriority = [
+        \App\Http\Middleware\AddTokenHeader::class,
+        \App\Http\Middleware\Authenticate::class,
+    ];
+
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
@@ -34,7 +42,7 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+            //\App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -43,6 +51,13 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+        "api.auth" => [
+            \App\Http\Middleware\AddTokenHeader::class,
+            'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            "auth:api",
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        ]
     ];
 
     /**
